@@ -6,11 +6,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
+
+import com.cos.jwt.filter.MyFilter1;
 
 import lombok.RequiredArgsConstructor;
 
-@Configuration
+@Configuration // @Configuration은 설정파일을 만들기 위한 / Bean을 등록하기 위한 Annotation
 @EnableWebSecurity // 활성화 , 스프링 시큐리티 필터가 스프링 필터 체인에 등록
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -21,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable(); // 비활성화
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션을 사용하지도 않음.
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션을 사용하지 않음.
 		.and()
 		.addFilter(corsFilter) //@CrossOrigin(인증x), 시큐리티 필터에 등록을 해야 인증있을때 사용
 		.formLogin().disable() // formLogin 사용 X

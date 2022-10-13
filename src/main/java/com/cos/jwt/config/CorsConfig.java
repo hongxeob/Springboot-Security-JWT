@@ -8,7 +8,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import org.springframework.web.filter.CorsFilter;
 
-@Configuration
+@Configuration // @Configuration은 설정파일을 만들기 위한 / Bean을 등록하기 위한 Annotation
 public class CorsConfig {
 	@Bean
 	public CorsFilter corsFilter() {
