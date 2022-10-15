@@ -9,7 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
-import com.cos.jwt.filter.MyFilter1;
+import com.cos.jwt.config.jwt.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.formLogin().disable() // formLogin 사용 X
 ////////////////위 까지가 jwt의  세팅시 기본적으로 들어가야 하는 세팅/////////////////
 		.httpBasic().disable() // 기존의 Http 로그인 방식 사용 X
+		.addFilter(new JwtAuthenticationFilter(authenticationManager())) // 파라미터 AuthenticationManager를 던져 줘야함. 
 		.authorizeRequests() // 권한에 따른 홈페이지 접속 허용(추가기능) 
 		.antMatchers("/api/v1/user/**")
 		.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
