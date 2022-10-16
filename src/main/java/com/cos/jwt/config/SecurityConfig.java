@@ -13,6 +13,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.filter.CorsFilter;
 
 import com.cos.jwt.config.jwt.JwtAuthenticationFilter;
+import com.cos.jwt.config.jwt.JwtAuthorizationFilter;
+import com.cos.jwt.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final CorsFilter corsFilter;
+	private final UserRepository userRepository;
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -40,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 ////////////////위 까지가 jwt의  세팅시 기본적으로 들어가야 하는 세팅/////////////////
 		.httpBasic().disable() // ID + PWD 를 들고가는 방식인 httpBasic이 아닌 Token을 들고가는 Bearer 방식을 사용하기위해
 		.addFilter(new JwtAuthenticationFilter(authenticationManager())) // 파라미터 AuthenticationManager를 던져 줘야함. 
+		.addFilter(new JwtAuthorizationFilter(authenticationManager(),userRepository))
 		.authorizeRequests() // 권한에 따른 홈페이지 접속 허용(추가기능) 
 		.antMatchers("/api/v1/user/**")
 		.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
